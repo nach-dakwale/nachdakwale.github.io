@@ -4,93 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | Nach Dakwale</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" type="image/svg+xml">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Nach Dakwale</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects.html" class="active">Projects</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
+    <nav class="top-nav">
+        <a href="/">Home</a>
+        <a href="/projects" class="active">Projects</a>
+        <!-- <a href="/about">About</a> -->
+    </nav>
 
-    <main>
-        <section class="projects-hero">
-            <h1>Projects</h1>
-            <p>Explore my work and contributions</p>
-        </section>
-
-        <section class="project-section" id="project1">
-            <div class="project-content">
-                <div class="project-image">
-                    <img src="images/langcoin-logo.png" alt="LangCoin Logo">
+    <div class="container">
+        <h1 class="page-title">My Projects</h1>
+        
+        <ul class="project-list">
+            <li class="project-item" data-project-id="langcoin">
+                <div class="project-header">
+                    <span class="project-name">LangCoin</span>
+                    <span class="project-desc">Python package wrapper with trade signals</span>
+                    <span class="project-spacer"></span>
+                    <span class="project-year">2025</span>
                 </div>
-                <p class="project-description">LangCoin is an open source Python package wrapper with trade signals for $LCOIN, a cryptocurrency memecoin. Developers see trade signals in the command-line interface while they build applications.</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>Ethereum</span>
-                    <span>Next.js</span>
-                    <span>React</span>
+                <div class="project-details">
+                    <p>LangCoin is an open source Python package wrapper with trade signals for $LCOIN, a cryptocurrency memecoin. Developers see trade signals in the command-line interface while they build AI applications.</p>
+                    <div class="project-detail-links">
+                        <a href="https://langcoin.info" class="detail-link" target="_blank" title="Visit Website"><i class="fas fa-globe"></i></a>
+                        <a href="https://github.com/LangCoinAI/LangCoin" class="detail-link" target="_blank" title="View on GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/LangCoinAI" class="detail-link" target="_blank" title="Follow on X"><img src="images/logo-black.png" alt="X Logo" class="project-detail-img-icon"></a>
+                    </div>
                 </div>
-                <div class="project-links">
-                    <a href="https://langcoin.info" class="project-link" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> Visit Website
-                    </a>
-                    <a href="https://github.com/LangCoinAI/LangCoin" class="project-link" target="_blank">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                    <a href="https://x.com/LangCoinAI" class="project-link" target="_blank">
-                        <img src="images/logo-black.png" alt="X Logo" class="x-logo"> Follow on X
-                    </a>
+            </li>
+            <li class="project-item" data-project-id="postbet">
+                 <div class="project-header">
+                    <span class="project-name">PostBET</span>
+                    <span class="project-desc">Social media prediction market platform</span>
+                    <span class="project-spacer"></span>
+                    <span class="project-year">2025</span>
+                 </div>
+                 <div class="project-details">
+                     <p>PostBET is a social media prediction market that enables users to create real-money polls on top of X posts. Users can earn money by creating polls, making predictions, and verifying information.</p>
+                     <div class="project-detail-links">
+                         <a href="https://postbet.xyz" class="detail-link" target="_blank" title="Visit Website"><i class="fas fa-globe"></i></a>
+                         <a href="https://x.com/PostBET_XYZ" class="detail-link" target="_blank" title="Follow on X"><img src="images/logo-black.png" alt="X Logo" class="project-detail-img-icon"></a>
+                     </div>
+                 </div>
+            </li>
+            <li class="project-item" data-project-id="triviatoken">
+                 <div class="project-header">
+                    <span class="project-name">TriviaToken</span>
+                    <span class="project-desc">AI chatbot that automates trivia and payments</span>
+                    <span class="project-spacer"></span>
+                    <span class="project-year">2025</span>
+                 </div>
+                 <div class="project-details">
+                     <p>TriviaToken is an AI chatbot and community engagement tool that posts trivia questions on Discord and rewards answers with cryptocurrency.</p>
+                     <div class="project-detail-links">
+                         <a href="https://github.com/nach-dakwale/ethglobal-trivia-tokens" class="detail-link" target="_blank" title="View on GitHub"><i class="fab fa-github"></i></a>
+                     </div>
+                 </div>
+            </li>
+            <li class="project-item" data-project-id="curated">
+                 <div class="project-header">
+                    <span class="project-name">Curated by Nach</span>
+                    <span class="project-desc">Community of shared beliefs</span>
+                    <span class="project-spacer"></span>
+                    <span class="project-year">2025</span>
                 </div>
-            </div>
-        </section>
-
-        <section class="project-section" id="project2">
-            <div class="project-content">
-                <div class="project-image">
-                    <img src="images/postbet-logo.png" alt="PostBET Logo">
-                </div>
-                <p class="project-description">PostBET is a social media betting platform that enables users to create polls and bet on them on top of social media posts. Users can bet on whether information is true or not.</p>
-                <div class="project-tags">
-                    <span>React.js</span>
-                    <span>Node.js</span>
-                    <span>Firebase</span>
-                    <span>Ethereum</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://postbet.xyz" class="project-link" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> Visit Website
-                    </a>
-                    <a href="https://x.com/PostBET_XYZ" class="project-link" target="_blank">
-                        <img src="images/logo-black.png" alt="X Logo" class="x-logo"> Follow on X
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="https://linkedin.com/in/nach-dakwale" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/NachLikeNacho" target="_blank">
-                    <img src="images/logo-black.png" alt="X Logo" class="x-logo">
-                </a>
-            </div>
-            <p>&copy; 2025 Nach Dakwale. All rights reserved.</p>
-        </div>
-    </footer>
+                 <div class="project-details">
+                     <p>Curated by Nach is an experimental digital community. People purchase belief-based quote NFTs to become members, connect with like-minded friends, and gain access to free digital tools, products, and advice.</p>
+                      <div class="project-detail-links">
+                         <a href="https://x.com/NachLikeNacho" class="detail-link" target="_blank" title="Follow on X"><img src="images/logo-black.png" alt="X Logo" class="project-detail-img-icon"></a>
+                     </div>
+                 </div>
+            </li>
+        </ul>
+    </div>
 
     <script src="js/main.js"></script>
 </body>

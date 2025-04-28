@@ -3,76 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nach Dakwale's Portfolio</title>
+    <title>Nach Dakwale</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" type="image/svg+xml">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Nach Dakwale</div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
+    <nav class="top-nav">
+        <a href="/" class="active">Home</a>
+        <a href="/projects">Projects</a>
+        <!-- <a href="/about">About</a> -->
+    </nav>
 
-    <main>
-        <section class="hero-title">
-            <h1>Nach Dakwale's Portfolio</h1>
-            <div class="featured-grid">
-                <a href="projects.html#project1" class="featured-card">
-                    <div class="card-image">
-                        <img src="images/langcoin-logo.png" alt="LangCoin Logo">
-                    </div>
-                    <div class="card-content">
-                        <h3>LangCoin</h3>
-                        <p>An open source Python package wrapper with trade signals for $LCOIN, a cryptocurrency memecoin.</p>
-                        <div class="card-tags">
-                            <span>Python</span>
-                            <span>Ethereum</span>
-                            <span>Next.js</span>
-                            <span>React</span>
-                        </div>
-                    </div>
-                </a>
-                <a href="projects.html#project2" class="featured-card">
-                    <div class="card-image">
-                        <img src="images/postbet-logo.png" alt="PostBET Logo">
-                    </div>
-                    <div class="card-content">
-                        <h3>PostBET</h3>
-                        <p>A social media betting platform that enables users to create polls and bet on top of social media posts.</p>
-                        <div class="card-tags">
-                            <span>React.js</span>
-                            <span>Node.js</span>
-                            <span>Firebase</span>
-                            <span>Ethereum</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="https://linkedin.com/in/nach-dakwale" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/NachLikeNacho" target="_blank">
-                    <img src="images/logo-black.png" alt="X Logo" class="x-logo">
-                </a>
-            </div>
-            <p>&copy; 2025 Nach Dakwale. All rights reserved.</p>
+    <div class="container">
+        <!-- Populated image cluster -->
+        <div class="image-cluster">
+             <!-- Wrap images in links for click handling -->
+             <a href="#" class="cluster-link" data-index="0" data-description="Enjoying the water in San Diego, California">
+                 <img src="images/nach-one.jpg" alt="Nach Photo 1" class="cluster-img img-1">
+             </a>
+             <a href="#" class="cluster-link" data-index="1" data-description="Fun travels in Nara, Japan">
+                 <img src="images/nach-two.jpg" alt="Nach Photo 2" class="cluster-img img-2">
+             </a>
+             <a href="#" class="cluster-link" data-index="2" data-description="Amateur iPhone photography of a sunset on a lake">
+                 <img src="images/nach-three.jpg" alt="Nach Photo 3" class="cluster-img img-3">
+             </a>
+             <a href="#" class="cluster-link" data-index="3" data-description="One of my favorite clients">
+                 <img src="images/nach-four.jpg" alt="Nach Photo 4" class="cluster-img img-4">
+             </a>
         </div>
-    </footer>
+
+        <h1 class="main-name">Nach Dakwale</h1>
+        <p class="intro-text">
+            I'm a product and community builder with expertise in AI, 
+            developer products, payments, and trading technologies.
+        </p>
+        
+        <div class="social-icons">
+             <a href="https://github.com/nach-dakwale" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+             <a href="https://x.com/NachLikeNacho" target="_blank" title="X / Twitter">
+                 <img src="images/logo-black.png" alt="X Logo" class="social-img-icon x-logo">
+             </a>
+             <a href="https://linkedin.com/in/nach-dakwale" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+             <a href="mailto:nach@nachdakwale.com" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <!-- Modal Structure (Hidden by default) -->
+    <div id="imageModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img src="" alt="" id="modalImage" class="modal-image">
+            <p id="modalDescription" class="modal-description"></p>
+            <div class="modal-nav-container">
+                <button class="modal-nav prev" id="modalPrev" aria-label="Previous image">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="modal-arrow-svg">
+                        <path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button class="modal-nav next" id="modalNext" aria-label="Next image">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="modal-arrow-svg">
+                         <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                     </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
 </body>
