@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         galleryLinks.forEach(link => {
             galleryImages.push({
-                src: link.querySelector('img').src,
+                src: link.dataset.fullSrc,
                 description: link.dataset.description,
                 alt: link.querySelector('img').alt
             });
