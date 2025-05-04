@@ -318,18 +318,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupProjectListLogic() {
+        console.log('---> Entering setupProjectListLogic'); // DEBUG: Entry log
         const projectList = document.querySelector('.project-list');
         if (projectList) {
-            // ... (Existing project list click listener logic) ...
+            console.log('  Project list found (.project-list). Adding listeners...'); // DEBUG
             const projectHeaders = projectList.querySelectorAll('.project-header');
             projectHeaders.forEach(header => {
-                 // Need to be careful about adding duplicate listeners if this runs multiple times
-                 // Best practice: remove old listener before adding new one, or use event delegation on projectList
-                 header.addEventListener('click', () => { /* ... existing toggle logic ... */ });
+                 // Simple approach: Re-add listener. For robustness, consider removing old listeners first or using event delegation.
+                 header.addEventListener('click', () => {
+                    console.log('    Project header clicked:', header); // DEBUG: Click log
+                    const currentItem = header.closest('.project-item');
+                    if (!currentItem) {
+                        console.error('    Could not find parent .project-item for clicked header.'); // DEBUG
+                        return;
+                    }
+                    const isActive = currentItem.classList.contains('active');
+                    console.log(`    Item ${currentItem.dataset.projectId || 'unknown'} was active: ${isActive}`); // DEBUG
+
+                    // Find any other item that is currently active
+                    const currentlyActiveItem = projectList.querySelector('.project-item.active');
+                    
+                    // If there is an active item, and it's not the one we just clicked, deactivate it
+                    if (currentlyActiveItem && currentlyActiveItem !== currentItem) {
+                        console.log(`    Deactivating other active item: ${currentlyActiveItem.dataset.projectId || 'unknown'}`); // DEBUG
+                        currentlyActiveItem.classList.remove('active');
+                    }
+
+                    // Toggle the active state of the clicked item
+                    // If it wasn't active, it becomes active. If it was active, it becomes inactive.
+                    currentItem.classList.toggle('active');
+                    console.log(`    Toggled active class. Item ${currentItem.dataset.projectId || 'unknown'} is now active: ${currentItem.classList.contains('active')}`); // DEBUG
+                });
             });
         } else {
-            console.log('Project list element NOT found for setup.');
+            console.warn('  Project list element (.project-list) NOT found during setup.'); // DEBUG: Warn if not found
         }
+        console.log('<--- Exiting setupProjectListLogic'); // DEBUG: Exit log
     }
 
     console.log('Script setup finished.'); // DEBUG: End of listener
