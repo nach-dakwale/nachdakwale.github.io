@@ -116,47 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Modal element NOT found.'); // DEBUG
     }
 
-    // --- Project List Accordion Logic ---
-    console.log('Checking for project list element...'); // DEBUG: Before project list query
-    const projectList = document.querySelector('.project-list');
-    if (projectList) {
-        console.log('Project list found. Adding listeners...'); // DEBUG
-        const projectHeaders = projectList.querySelectorAll('.project-header');
-
-        projectHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                console.log('Project header clicked:', header); // DEBUG
-                const currentItem = header.closest('.project-item');
-                if (!currentItem) {
-                    console.error('Could not find parent .project-item for', header); // DEBUG
-                    return;
-                }
-                console.log('Clicked item:', currentItem); // DEBUG
-                
-                const isActive = currentItem.classList.contains('active');
-                console.log('Is active before toggle:', isActive); // DEBUG
-
-                // First, close any currently active item
-                const activeItem = projectList.querySelector('.project-item.active');
-                if (activeItem && activeItem !== currentItem) {
-                    console.log('Closing other active item:', activeItem); // DEBUG
-                    activeItem.classList.remove('active');
-                }
-
-                // Then, toggle the clicked item
-                if (!isActive) {
-                    console.log('Adding active class'); // DEBUG
-                    currentItem.classList.add('active');
-                } else {
-                    console.log('Removing active class'); // DEBUG
-                    currentItem.classList.remove('active'); 
-                }
-                console.log('Active class list after toggle:', currentItem.classList); // DEBUG
-            });
-        });
-    } else {
-        console.warn('Project list element not found on this page.'); // DEBUG: Changed wording slightly
+    // --- Initial Execution of setup functions based on current page ---
+    const initialPath = window.location.pathname.replace(/\/?$/, ''); // Normalize current path
+    console.log('Current path on initial load:', initialPath); // DEBUG
+    if (initialPath === '' || initialPath === '/index.html') {
+        console.log('Initial load on Home page. Running Cluster and Modal setup.'); // DEBUG
+        setupImageClusterLogic();
+        setupModalLogic();
+    } else if (initialPath === '/projects' || initialPath === '/projects.html') {
+        console.log('Initial load on Projects page. Running Project List setup.'); // DEBUG
+        setupProjectListLogic();
     }
+    // Add other page initializations here if needed
 
     // --- Page Transition Logic (SPA-like) --- 
     console.log('Setting up SPA-like page transition logic...'); // DEBUG
@@ -217,12 +188,15 @@ document.addEventListener('DOMContentLoaded', () => {
             contentContainer.classList.add('fade-in'); 
             
              // Re-run scripts or specific initializations if needed for the new content
-             const targetPath = new URL(targetUrl, window.location.origin).pathname;
-             if (targetPath === '/') { // Check path for Home
-                 setupImageClusterLogic(); 
-                 setupModalLogic(); 
-             } else if (targetPath === '/projects') { // Check path for Projects
-                 setupProjectListLogic(); 
+             const targetPath = new URL(targetUrl, window.location.origin).pathname.replace(/\/?$/, ''); // Normalize path
+             console.log('Target path for logic setup:', targetPath); // DEBUG
+             if (targetPath === '' || targetPath === '/index.html') { // Check path for Home (root or index.html)
+                 console.log('Setting up Home page logic (Cluster, Modal)'); // DEBUG
+                 setupImageClusterLogic();
+                 setupModalLogic();
+             } else if (targetPath === '/projects' || targetPath === '/projects.html') { // Check path for Projects
+                 console.log('Setting up Projects page logic (Project List)'); // DEBUG
+                 setupProjectListLogic();
              }
 
             // 5. Update URL and Nav link (only if not triggered by popstate)
@@ -356,16 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.log('Project list element NOT found for setup.');
         }
-    }
-
-    // --- Initial Execution of setup functions based on current page ---
-    // Check initial pathname
-    const initialPath = window.location.pathname;
-    if (initialPath === '/') { // Check path for Home
-        setupImageClusterLogic();
-        setupModalLogic();
-    } else if (initialPath === '/projects') { // Check path for Projects
-        setupProjectListLogic();
     }
 
     console.log('Script setup finished.'); // DEBUG: End of listener
