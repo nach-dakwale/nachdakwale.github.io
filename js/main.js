@@ -7,6 +7,9 @@ console.log('JS Test Load - projects.html');
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOMContentLoaded fired. Starting script setup...'); // DEBUG: Top level
 
+    // Ensure body starts without fade-out class (handles back/forward cache)
+    document.body.classList.remove('fade-out');
+
     // --- Cluster Logic --- 
     const cluster = document.querySelector('.image-cluster');
     if (cluster) { 
@@ -155,28 +158,215 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Project list element not found on this page.'); // DEBUG: Changed wording slightly
     }
 
-    // --- Page Transition Logic --- 
-    console.log('Setting up page transition logic...'); // DEBUG
-    const internalLinks = document.querySelectorAll('.top-nav a'); 
-    const animationDuration = 400; 
+    // --- Page Transition Logic (SPA-like) --- 
+    console.log('Setting up SPA-like page transition logic...'); // DEBUG
+    const navLinks = document.querySelectorAll('.top-nav a');
+    const contentContainer = document.querySelector('.container');
+    const fadeOutDuration = 400; // ms (match CSS)
+    const fadeInDuration = 500; // ms (match CSS)
 
-    internalLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const targetUrl = link.href;
+    function updateActiveLink(targetUrlPath) {
+        navLinks.forEach(navLink => {
+            const linkPath = new URL(navLink.href, window.location.origin).pathname.replace(/\/$/, '');
+            const targetPath = targetUrlPath.replace(/\/$/, '');
             
-            if (link.classList.contains('active') || !targetUrl) {
-                return; 
-            }
-
-            if (!targetUrl.startsWith('http') || targetUrl.includes(window.location.hostname)) {
-                 e.preventDefault(); 
-                document.body.classList.add('fade-out');
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, animationDuration);
+            if (linkPath === targetPath) {
+                navLink.classList.add('active');
+            } else {
+                navLink.classList.remove('active');
             }
         });
+    }
+
+    async function loadContent(targetUrl, isPopState = false) {
+        if (!contentContainer) return;
+
+        // 1. Add fade-out class to current content
+        contentContainer.classList.remove('fade-in'); // Remove fade-in if it exists
+        contentContainer.classList.add('fade-out');
+
+        // Wait for fade-out animation
+        await new Promise(resolve => setTimeout(resolve, fadeOutDuration));
+
+        try {
+            // 2. Fetch new page content
+            const response = await fetch(targetUrl);
+            if (!response.ok) {
+                console.error('Failed to fetch page:', response.statusText);
+                 window.location.href = targetUrl; // Fallback to full navigation on error
+                return;
+            }
+            const htmlText = await response.text();
+
+            // 3. Parse HTML and extract new container content
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const newContainer = doc.querySelector('.container');
+
+            if (!newContainer) {
+                console.error('Could not find .container in fetched HTML');
+                 window.location.href = targetUrl; // Fallback
+                return;
+            }
+
+            // 4. Replace current content and add fade-in class
+            contentContainer.innerHTML = newContainer.innerHTML;
+            contentContainer.classList.remove('fade-out');
+            // Force reflow before adding fade-in might be needed in some browsers, but try without first
+             contentContainer.offsetHeight; // Optional reflow trigger
+            contentContainer.classList.add('fade-in'); 
+            
+             // Re-run scripts or specific initializations if needed for the new content
+             const targetPath = new URL(targetUrl, window.location.origin).pathname;
+             if (targetPath === '/') { // Check path for Home
+                 setupImageClusterLogic(); 
+                 setupModalLogic(); 
+             } else if (targetPath === '/projects') { // Check path for Projects
+                 setupProjectListLogic(); 
+             }
+
+            // 5. Update URL and Nav link (only if not triggered by popstate)
+            if (!isPopState) {
+                history.pushState({ path: targetUrl }, '', targetUrl);
+                 updateActiveLink(new URL(targetUrl, window.location.origin).pathname);
+            } else {
+                 // For popstate, just update active link based on current location
+                 updateActiveLink(window.location.pathname);
+            }
+
+             // Remove the fade-in class after animation completes (optional cleanup)
+             setTimeout(() => {
+                 contentContainer.classList.remove('fade-in');
+             }, fadeInDuration);
+
+        } catch (error) {
+            console.error('Error loading page content:', error);
+             window.location.href = targetUrl; // Fallback to full navigation on error
+        }
+    }
+
+    // Add click listeners to nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const targetUrl = link.href;
+            const currentUrl = window.location.href;
+
+            // Don't do anything if clicking the link for the current page
+            if (targetUrl === currentUrl || link.classList.contains('active')) {
+                e.preventDefault();
+                return;
+            }
+
+            // Only handle internal navigation
+            if (targetUrl.startsWith(window.location.origin) && !link.target) { // Check origin and avoid target="_blank"
+                e.preventDefault();
+                loadContent(targetUrl);
+            }
+            // Let external links or links with target="_blank" behave normally
+        });
     });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('popstate', (e) => {
+        console.log('Popstate event fired:', window.location.pathname); // DEBUG
+         // Use location.href which includes the filename for simple server setup
+        const targetUrl = window.location.href; 
+        loadContent(targetUrl, true); // Pass true to indicate it's from popstate
+         updateActiveLink(window.location.pathname); // Update active link based on new path
+    });
+
+    // Initial setup: Update active link
+    updateActiveLink(window.location.pathname);
+    
+    // ---- Refactor existing logic into functions ----
+    function setupImageClusterLogic() {
+        const cluster = document.querySelector('.image-cluster');
+        if (cluster) { 
+            // ... (Existing cluster mouseenter/mouseleave logic) ...
+             const images = cluster.querySelectorAll('.cluster-img');
+             const baseDelay = 0.08;
+             cluster.addEventListener('mouseenter', () => {
+                 cluster.classList.add('expanded');
+                 images.forEach((img, index) => {
+                     img.style.transitionDelay = `${index * baseDelay}s`;
+                 });
+             });
+             cluster.addEventListener('mouseleave', () => {
+                 images.forEach((img, index) => {
+                     img.style.transitionDelay = `${index * baseDelay}s`;
+                 });
+                 cluster.classList.remove('expanded');
+             });
+        } else {
+             console.log('Cluster element NOT found for setup.');
+        }
+    }
+    
+    function setupModalLogic() {
+         const modal = document.getElementById('imageModal');
+         if (modal) {
+             // ... (Existing modal logic: selectors, functions, listeners) ...
+             const modalImage = document.getElementById('modalImage');
+             const modalDescription = document.getElementById('modalDescription');
+             const closeModal = document.querySelector('.modal-close');
+             const modalOverlay = document.querySelector('.modal-overlay');
+             const prevButton = document.getElementById('modalPrev');
+             const nextButton = document.getElementById('modalNext');
+             const galleryLinks = document.querySelectorAll('.cluster-link');
+             let currentImageIndex = 0;
+             let galleryImages = [];
+             galleryLinks.forEach(link => {
+                 if (link.querySelector('img')) { // Check if img exists before accessing src
+                     galleryImages.push({
+                         src: link.querySelector('img').src,
+                         description: link.dataset.description,
+                         alt: link.querySelector('img').alt
+                     });
+                 }
+             });
+             // ... (rest of modal functions: openModal, closeModalFunction, updateModalContent, etc.) ...
+             function openModal(index) { /* ... */ }
+             function closeModalFunction() { /* ... */ }
+             function updateModalContent() { /* ... */ }
+             function showPrevImage() { /* ... */ }
+             function showNextImage() { /* ... */ }
+             // Add listeners only if they aren't already attached (tricky without removal)
+             // Consider adding flags or removing previous listeners if re-running this often
+             galleryLinks.forEach(link => { /* ... click listener ... */ });
+             if (closeModal) closeModal.addEventListener('click', closeModalFunction);
+             if (modalOverlay) modalOverlay.addEventListener('click', closeModalFunction);
+             if (prevButton) prevButton.addEventListener('click', showPrevImage);
+             if (nextButton) nextButton.addEventListener('click', showNextImage);
+             // Keyboard listener likely okay to re-add or keep global
+         } else {
+             console.log('Modal element NOT found for setup.');
+         }
+    }
+
+    function setupProjectListLogic() {
+        const projectList = document.querySelector('.project-list');
+        if (projectList) {
+            // ... (Existing project list click listener logic) ...
+            const projectHeaders = projectList.querySelectorAll('.project-header');
+            projectHeaders.forEach(header => {
+                 // Need to be careful about adding duplicate listeners if this runs multiple times
+                 // Best practice: remove old listener before adding new one, or use event delegation on projectList
+                 header.addEventListener('click', () => { /* ... existing toggle logic ... */ });
+            });
+        } else {
+            console.log('Project list element NOT found for setup.');
+        }
+    }
+
+    // --- Initial Execution of setup functions based on current page ---
+    // Check initial pathname
+    const initialPath = window.location.pathname;
+    if (initialPath === '/') { // Check path for Home
+        setupImageClusterLogic();
+        setupModalLogic();
+    } else if (initialPath === '/projects') { // Check path for Projects
+        setupProjectListLogic();
+    }
 
     console.log('Script setup finished.'); // DEBUG: End of listener
 }); 

@@ -15,12 +15,6 @@ body {
     color: #333; /* Default text color */
     line-height: 1.6;
     padding-top: 80px; /* Space for fixed nav */
-    /* animation: fadeIn 0.5s ease-out forwards; */ /* Temporarily disable body animation */
-    /* opacity: 0; */ /* Needs to be removed if animation is disabled */
-}
-
-body.fade-out {
-    animation: fadeOut 0.4s ease-in forwards;
 }
 
 @keyframes fadeIn {
@@ -41,7 +35,7 @@ body.fade-out {
     width: 100%;
     display: flex;
     justify-content: center; /* Keep nav centered for now */
-    padding: 1rem 0;
+    padding: 1rem 0; /* Restore original padding */
     background-color: rgba(248, 248, 248, 0.9); /* Semi-transparent background */
     backdrop-filter: blur(5px);
     z-index: 100;
@@ -50,11 +44,11 @@ body.fade-out {
 .top-nav a {
     text-decoration: none;
     color: #777; /* Lighter grey for inactive nav links */
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem; /* Restore original padding */
     margin: 0 0.5rem;
     border-radius: 6px;
     font-size: 0.9rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease; /* Restore background-color transition */
 }
 
 .top-nav a:hover {
@@ -62,7 +56,7 @@ body.fade-out {
 }
 
 .top-nav a.active {
-    background-color: #eee; /* Lighter background for active link */
+    background-color: #eee; /* Restore background for active link */
     color: #222; /* Darker text for active link */
 }
 
@@ -72,6 +66,18 @@ body.fade-out {
     margin: 2rem auto; 
     padding: 2rem;
     text-align: left; 
+    position: relative; 
+}
+
+/* Add fade-out animation for container */
+.container.fade-out {
+    animation: fadeOut 0.4s ease-in forwards;
+}
+
+/* Add fade-in animation for container */
+.container.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0; /* Start transparent */
 }
 
 /* Image Cluster - Initial State */
@@ -162,25 +168,18 @@ body.fade-out {
 }
 
 .social-icons a {
-    color: #777; 
-    font-size: 1.19rem; /* Reduced size to ~85% */
-    transition: color 0.2s ease;
-    display: inline-flex; 
-    align-items: center; 
-    text-decoration: none; 
+    color: #777; /* Default color for Font Awesome icons */
+    font-size: 1.19rem; /* Size for Font Awesome icons */
+    transition: color 0.2s ease; /* Keep only color transition */
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
     line-height: 1; /* Prevent extra line height */
 }
 
 .social-icons a:hover {
-    color: #222; 
+    color: #222; /* Hover color for Font Awesome */
     text-decoration: none; /* Ensure no underline on hover */
-}
-
-/* Style for image-based icons */
-.social-img-icon {
-    height: 1.0rem; /* Reduced size to ~85% */
-    width: auto;
-    display: block; /* Ensure image behaves like a block inside the flex container */
 }
 
 /* Responsive Adjustments */
