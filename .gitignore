@@ -1,3 +1,7 @@
+# Python virtual environment
+.venv/
+
+# OS-specific files
 .DS_Store
 node_modules/
 .env

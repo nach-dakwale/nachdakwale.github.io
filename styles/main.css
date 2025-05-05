@@ -342,6 +342,118 @@ body {
     display: block; /* Ensure proper layout */
 }
 
+/* --- Blog Page Styles --- */
+
+/* Increased specificity */
+ul.blog-post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0; /* Add some bottom margin */
+}
+
+.blog-post-item {
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+.blog-post-item:last-child {
+    border-bottom: none;
+}
+
+/* Re-add link class for specificity */
+.blog-post-item a.post-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    padding: 0.75rem 0; /* Add vertical padding to link */
+}
+
+/* Re-add hover style for link */
+.blog-post-item a.post-link:hover {
+    background-color: #f0f0f0; 
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    cursor: pointer; 
+    padding: 0 1rem; /* Remove vertical padding, keep horizontal */
+    margin-bottom: 0; 
+}
+
+.post-title {
+    font-weight: 500; 
+    font-size: 1.1rem; 
+    color: #111 !important; /* Keep override for now */
+    margin-right: 1rem; 
+}
+
+.post-date {
+    font-size: 0.85rem;
+    color: #999; 
+    flex-shrink: 0; 
+}
+
+/* Restore styling for excerpt on list page */
+.post-excerpt {
+    font-size: 0.95rem;
+    color: #555; 
+    line-height: 1.5; 
+    margin: 0 1rem 0.25rem 1rem; /* Adjust bottom margin for single line */
+    /* Single Line Clamping */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Remove multi-line specific properties */
+    /* display: -webkit-box; */ 
+    /* -webkit-line-clamp: 1; */
+    /* -webkit-box-orient: vertical; */ 
+}
+
+/* Remove .post-details hidden/active styles */
+/* Remove .post-details p styles */
+
+/* --- Full Blog Post Styles --- */
+.blog-post-full {
+    margin-bottom: 2rem;
+}
+
+.post-full-header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.post-full-title {
+    font-size: 1.8rem;
+    color: #111;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.post-full-date {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+}
+
+.post-full-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* Style for back link */
+.container > p > a {
+    color: #555;
+    text-decoration: none;
+}
+.container > p > a:hover {
+    text-decoration: underline;
+}
+
 /* --- Work/Projects Page Styles --- */
 
 .page-title {
@@ -530,4 +642,91 @@ body {
     .image-cluster.expanded .cluster-img.img-2 { transform: scale(0.6) rotate(5deg)   translate(40px, 10px); } 
     .image-cluster.expanded .cluster-img.img-3 { transform: scale(0.6) rotate(-6deg)  translate(80px, 30px); } 
     .image-cluster.expanded .cluster-img.img-4 { transform: scale(0.6) rotate(10deg)  translate(120px, 5px); } 
+} 
+
+/* Specific styles for elements within the post content */
+.post-full-content h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #222;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee; /* Subtle separator */
+    padding-bottom: 0.3rem;
+}
+
+.post-full-content p {
+    margin-bottom: 1.2rem;
+}
+
+.post-full-content ul,
+.post-full-content ol {
+    margin-bottom: 1.2rem;
+    padding-left: 1.8em; /* More standard indentation */
+}
+
+.post-full-content li {
+    margin-bottom: 0.5rem;
+}
+
+.post-full-content strong {
+    font-weight: 600;
+    color: #111;
+}
+
+.post-full-content a {
+    color: #007bff; /* Standard link blue */
+    text-decoration: none;
+}
+
+.post-full-content a:hover {
+    text-decoration: underline;
+}
+
+/* Table Styling (moved from inline) */
+.post-full-content .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.8rem 0;
+    font-size: 0.9rem;
+    border: 1px solid #ddd; /* Add border around table */
+}
+.post-full-content .comparison-table th,
+.post-full-content .comparison-table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px; /* Slightly more padding */
+    text-align: left;
+    vertical-align: top;
+}
+.post-full-content .comparison-table th {
+    background-color: #f5f5f5; /* Slightly lighter header */
+    font-weight: 600;
+    color: #333;
+}
+.post-full-content .comparison-table tr:nth-child(even) {
+    background-color: #fcfcfc; /* Very subtle striping */
+}
+.post-full-content .comparison-table ul {
+    margin: 0;
+    padding-left: 1.2em; /* Indent list items inside table */
+    list-style-type: disc; /* Ensure bullets are visible */
+}
+.post-full-content .comparison-table li {
+    margin-bottom: 0.4em;
+}
+.post-full-content .comparison-table strong {
+    font-weight: 600;
+    color: inherit; /* Inherit color within table */
+}
+
+
+/* Link back to blog list */
+.container > p > a[href="/blog"] { /* More specific selector */
+    display: inline-block; /* Allows margin */
+    color: #555;
+    text-decoration: none;
+}
+
+.container > p > a[href="/blog"]:hover {
+    text-decoration: underline;
 } 

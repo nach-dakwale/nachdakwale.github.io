@@ -168,9 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateActiveLink(targetUrlPath) {
         navLinks.forEach(navLink => {
             const linkPath = new URL(navLink.href, window.location.origin).pathname.replace(/\/$/, '');
-            const targetPath = targetUrlPath.replace(/\/$/, '');
+            let targetPath = targetUrlPath.replace(/\/$/, '');
             
-            if (linkPath === targetPath) {
+            // If target is a post, highlight the main Blog link
+            if (targetPath.startsWith('/posts/')) {
+                targetPath = '/blog';
+            }
+            
+            if (linkPath === targetPath || (linkPath === '/' && targetPath === '')) { // Also handle empty path for root
                 navLink.classList.add('active');
             } else {
                 navLink.classList.remove('active');
@@ -218,11 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
              // Re-run scripts or specific initializations if needed for the new content
              const targetPath = new URL(targetUrl, window.location.origin).pathname;
-             if (targetPath === '/') { // Check path for Home
+             console.log('Target path for logic setup:', targetPath); // DEBUG
+             if (targetPath === '/' || targetPath === '/index.html') { // Check path for Home
+                 console.log('Setting up Home logic...'); // DEBUG
                  setupImageClusterLogic(); 
                  setupModalLogic(); 
-             } else if (targetPath === '/projects') { // Check path for Projects
+             } else if (targetPath === '/projects' || targetPath.endsWith('/projects.html')) { // Check path for Projects
+                 console.log('Setting up Projects logic...'); // DEBUG
                  setupProjectListLogic(); 
+             } else if (targetPath === '/blog' || targetPath.endsWith('/blog.html') || targetPath.startsWith('/posts/')) { // Check path for Blog OR individual post
+                 console.log('Setting up Blog logic...'); // DEBUG
+                 // No specific setup needed now for list or posts
+                 console.log('Loaded blog content.');
              }
 
             // 5. Update URL and Nav link (only if not triggered by popstate)
@@ -361,11 +373,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Execution of setup functions based on current page ---
     // Check initial pathname
     const initialPath = window.location.pathname;
-    if (initialPath === '/') { // Check path for Home
+    console.log('Initial path for logic setup:', initialPath); // DEBUG
+    if (initialPath === '/' || initialPath.endsWith('/index.html') || initialPath === '') { // Check path for Home
+        console.log('Initial setup: Home'); // DEBUG
         setupImageClusterLogic();
         setupModalLogic();
-    } else if (initialPath === '/projects') { // Check path for Projects
+    } else if (initialPath === '/projects' || initialPath.endsWith('/projects.html')) { // Check path for Projects
+        console.log('Initial setup: Projects'); // DEBUG
         setupProjectListLogic();
+    } else if (initialPath === '/blog' || initialPath.endsWith('/blog.html') || initialPath.startsWith('/posts/')) { // Check path for Blog OR post
+        console.log('Initial setup: Blog'); // DEBUG
+        // No specific setup needed now for blog list or posts
+        console.log('Initial load on blog page.');
     }
 
     console.log('Script setup finished.'); // DEBUG: End of listener
