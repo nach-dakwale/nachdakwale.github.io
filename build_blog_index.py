@@ -2,27 +2,47 @@ import os
 import glob
 from bs4 import BeautifulSoup
 from datetime import datetime
+import re
 
 POSTS_DIR = 'posts'
 BLOG_INDEX_FILE = 'blog.html'
 POST_DATE_FORMAT = '%b %d, %Y' # Example: Oct 26, 2024
+
+def to_url_friendly(title):
+    """Convert a title to a URL-friendly format."""
+    # Convert to lowercase
+    url = title.lower()
+    # Replace spaces with hyphens
+    url = re.sub(r'\s+', '-', url)
+    # Remove any non-alphanumeric characters (except hyphens)
+    url = re.sub(r'[^a-z0-9-]', '', url)
+    # Remove multiple consecutive hyphens
+    url = re.sub(r'-+', '-', url)
+    # Remove leading/trailing hyphens
+    url = url.strip('-')
+    return url
 
 def extract_post_data(filepath):
     """Extracts title, date, and link from a post HTML file."""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             soup = BeautifulSoup(f.read(), 'html.parser')
-
+            title = None  # Initialize title variable
+            
             title_tag = soup.find('h1', class_='post-full-title')
             date_tag = soup.find('p', class_='post-full-date')
-            # Try finding title in <title> tag as fallback
-            if not title_tag:
+            
+            # Try finding title in post-full-title first
+            if title_tag and title_tag.string:
+                title = title_tag.string.strip()
+            else:
+                # Try finding title in <title> tag as fallback
                 title_tag = soup.find('title')
-                if title_tag:
+                if title_tag and title_tag.string:
                     # Clean up title if taken from <title>
                     title = title_tag.string.split('|')[0].strip() if '|' in title_tag.string else title_tag.string.strip()
-            else:
-                title = title_tag.string.strip() if title_tag.string else 'Untitled'
+                else:
+                    title = 'Untitled'
             
             date_str = date_tag.string.strip() if date_tag and date_tag.string else None
             
@@ -37,7 +57,11 @@ def extract_post_data(filepath):
                 print(f"Warning: Could not parse date '{date_str}' in {filepath} using format '{POST_DATE_FORMAT}'. Skipping.")
                 return None
 
-            # Generate link relative to root
+            # Generate URL-friendly filename for new posts
+            url_friendly_title = to_url_friendly(title)
+            url_friendly_filename = f"{url_friendly_title}.html"
+            
+            # Use the original filename for the link to maintain compatibility
             link = f"/{POSTS_DIR}/{os.path.basename(filepath)}"
 
             # Extract custom excerpt from meta tag
@@ -56,7 +80,9 @@ def extract_post_data(filepath):
                 'date_obj': date_obj,
                 'date_str': date_str,
                 'link': link,
-                'excerpt': excerpt # Add excerpt here
+                'excerpt': excerpt,
+                'url_friendly_filename': url_friendly_filename,  # Add this for potential filename updates
+                'current_filename': os.path.basename(filepath)  # Store current filename
             }
 
     except Exception as e:
