@@ -116,47 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Modal element NOT found.'); // DEBUG
     }
 
-    // --- Project List Accordion Logic ---
-    console.log('Checking for project list element...'); // DEBUG: Before project list query
-    const projectList = document.querySelector('.project-list');
-    if (projectList) {
-        console.log('Project list found. Adding listeners...'); // DEBUG
-        const projectHeaders = projectList.querySelectorAll('.project-header');
-
-        projectHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                console.log('Project header clicked:', header); // DEBUG
-                const currentItem = header.closest('.project-item');
-                if (!currentItem) {
-                    console.error('Could not find parent .project-item for', header); // DEBUG
-                    return;
-                }
-                console.log('Clicked item:', currentItem); // DEBUG
-                
-                const isActive = currentItem.classList.contains('active');
-                console.log('Is active before toggle:', isActive); // DEBUG
-
-                // First, close any currently active item
-                const activeItem = projectList.querySelector('.project-item.active');
-                if (activeItem && activeItem !== currentItem) {
-                    console.log('Closing other active item:', activeItem); // DEBUG
-                    activeItem.classList.remove('active');
-                }
-
-                // Then, toggle the clicked item
-                if (!isActive) {
-                    console.log('Adding active class'); // DEBUG
-                    currentItem.classList.add('active');
-                } else {
-                    console.log('Removing active class'); // DEBUG
-                    currentItem.classList.remove('active'); 
-                }
-                console.log('Active class list after toggle:', currentItem.classList); // DEBUG
-            });
-        });
-    } else {
-        console.warn('Project list element not found on this page.'); // DEBUG: Changed wording slightly
+    // --- Initial Execution of setup functions based on current page ---
+    const initialPath = window.location.pathname.replace(/\/?$/, ''); // Normalize current path
+    console.log('Current path on initial load:', initialPath); // DEBUG
+    if (initialPath === '' || initialPath === '/index.html') {
+        console.log('Initial load on Home page. Running Cluster and Modal setup.'); // DEBUG
+        setupImageClusterLogic();
+        setupModalLogic();
+    } else if (initialPath === '/projects' || initialPath === '/projects.html') {
+        console.log('Initial load on Projects page. Running Project List setup.'); // DEBUG
+        setupProjectListLogic();
     }
+    // Add other page initializations here if needed
 
     // --- Page Transition Logic (SPA-like) --- 
     console.log('Setting up SPA-like page transition logic...'); // DEBUG
@@ -356,35 +327,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupProjectListLogic() {
+        console.log('---> Entering setupProjectListLogic'); // DEBUG: Entry log
         const projectList = document.querySelector('.project-list');
         if (projectList) {
-            // ... (Existing project list click listener logic) ...
+            console.log('  Project list found (.project-list). Adding listeners...'); // DEBUG
             const projectHeaders = projectList.querySelectorAll('.project-header');
             projectHeaders.forEach(header => {
-                 // Need to be careful about adding duplicate listeners if this runs multiple times
-                 // Best practice: remove old listener before adding new one, or use event delegation on projectList
-                 header.addEventListener('click', () => { /* ... existing toggle logic ... */ });
+                 // Simple approach: Re-add listener. For robustness, consider removing old listeners first or using event delegation.
+                 header.addEventListener('click', () => {
+                    console.log('    Project header clicked:', header); // DEBUG: Click log
+                    const currentItem = header.closest('.project-item');
+                    if (!currentItem) {
+                        console.error('    Could not find parent .project-item for clicked header.'); // DEBUG
+                        return;
+                    }
+                    const isActive = currentItem.classList.contains('active');
+                    console.log(`    Item ${currentItem.dataset.projectId || 'unknown'} was active: ${isActive}`); // DEBUG
+
+                    // Find any other item that is currently active
+                    const currentlyActiveItem = projectList.querySelector('.project-item.active');
+                    
+                    // If there is an active item, and it's not the one we just clicked, deactivate it
+                    if (currentlyActiveItem && currentlyActiveItem !== currentItem) {
+                        console.log(`    Deactivating other active item: ${currentlyActiveItem.dataset.projectId || 'unknown'}`); // DEBUG
+                        currentlyActiveItem.classList.remove('active');
+                    }
+
+                    // Toggle the active state of the clicked item
+                    // If it wasn't active, it becomes active. If it was active, it becomes inactive.
+                    currentItem.classList.toggle('active');
+                    console.log(`    Toggled active class. Item ${currentItem.dataset.projectId || 'unknown'} is now active: ${currentItem.classList.contains('active')}`); // DEBUG
+                });
             });
         } else {
-            console.log('Project list element NOT found for setup.');
+            console.warn('  Project list element (.project-list) NOT found during setup.'); // DEBUG: Warn if not found
         }
-    }
-
-    // --- Initial Execution of setup functions based on current page ---
-    // Check initial pathname
-    const initialPath = window.location.pathname;
-    console.log('Initial path for logic setup:', initialPath); // DEBUG
-    if (initialPath === '/' || initialPath.endsWith('/index.html') || initialPath === '') { // Check path for Home
-        console.log('Initial setup: Home'); // DEBUG
-        setupImageClusterLogic();
-        setupModalLogic();
-    } else if (initialPath === '/projects' || initialPath.endsWith('/projects.html')) { // Check path for Projects
-        console.log('Initial setup: Projects'); // DEBUG
-        setupProjectListLogic();
-    } else if (initialPath === '/blog' || initialPath.endsWith('/blog.html') || initialPath.startsWith('/posts/')) { // Check path for Blog OR post
-        console.log('Initial setup: Blog'); // DEBUG
-        // No specific setup needed now for blog list or posts
-        console.log('Initial load on blog page.');
+        console.log('<--- Exiting setupProjectListLogic'); // DEBUG: Exit log
     }
 
     console.log('Script setup finished.'); // DEBUG: End of listener
