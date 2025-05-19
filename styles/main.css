@@ -384,7 +384,7 @@ ul.blog-post-list {
 .post-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-start;
     cursor: pointer; 
     padding: 0 1rem; /* Remove vertical padding, keep horizontal */
     margin-bottom: 0; 
