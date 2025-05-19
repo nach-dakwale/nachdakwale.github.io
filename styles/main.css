@@ -62,11 +62,12 @@ body {
 
 /* Main container */
 .container {
-    max-width: 650px; /* Slightly wider to accommodate potentially wider row */
+    max-width: 705px; /* Match expanded image cluster with its padding (685px + 2*10px) */
     margin: 2rem auto; 
     padding: 2rem;
     text-align: left; 
     position: relative; 
+    left: -18px; /* Shift entire container left further */
 }
 
 /* Add fade-out animation for container */
@@ -86,8 +87,8 @@ body {
     height: 145px; 
     width: 210px; /* Increased initial width */
     margin-bottom: 1.5rem; 
-    margin-left: 0; 
-    margin-right: 0; 
+    margin-left: 0; /* Revert to left alignment */
+    margin-right: 0; /* Revert to left alignment */
     cursor: pointer; 
     padding: 5px; 
     border-radius: 8px; 
@@ -119,13 +120,18 @@ body {
 .cluster-img.img-2 { transform: scale(0.6) rotate(5deg)   translate(40px, 10px);  z-index: 2; }
 .cluster-img.img-3 { transform: scale(0.6) rotate(-6deg)  translate(100px, 30px); z-index: 3; }
 .cluster-img.img-4 { transform: scale(0.6) rotate(10deg)  translate(160px, 5px); z-index: 4; } /* Moved up (reduced Y translate) */
+.cluster-img.img-5 { transform: scale(0.6) rotate(-8deg)  translate(200px, 40px); z-index: 5; } /* Moved down further */
 
 /* Image Cluster - Expanded State */
 .image-cluster.expanded {
     background-color: #eee; 
     padding: 10px; 
-    width: 550px; /* Match intro text max-width */
+    width: 685px; /* Adjusted for 5 images: (5*125) + (6*10) = 625 + 60 = 685px */
     height: 145px; 
+    /* margin-left: auto; Ensure the expanded cluster is centered */
+    /* margin-right: auto; Ensure the expanded cluster is centered */
+    /* position: relative; Added for manual adjustment */
+    /* left: -15px; Shift left for better visual centering with nav */
 }
 
 .image-cluster.expanded .cluster-img {
@@ -141,6 +147,7 @@ body {
 .image-cluster.expanded .cluster-img.img-2 { transform: translate(145px, 0px) scale(1) rotate(0deg); } /* 10 + 125 + 10 */
 .image-cluster.expanded .cluster-img.img-3 { transform: translate(280px, 0px) scale(1) rotate(0deg); } /* 145 + 125 + 10 */
 .image-cluster.expanded .cluster-img.img-4 { transform: translate(415px, 0px) scale(1) rotate(0deg); } /* 280 + 125 + 10 */
+.image-cluster.expanded .cluster-img.img-5 { transform: translate(550px, 0px) scale(1) rotate(0deg); } /* 415 + 125 + 10 */
 
 /* Name Heading */
 .main-name {
