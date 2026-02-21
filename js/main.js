@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Initial load on Projects page. Running Project List setup.'); // DEBUG
         setupProjectListLogic();
     }
-    // Add other page initializations here if needed
 
     // --- Page Transition Logic (SPA-like) --- 
     console.log('Setting up SPA-like page transition logic...'); // DEBUG
@@ -141,10 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const linkPath = new URL(navLink.href, window.location.origin).pathname.replace(/\/$/, '');
             let targetPath = targetUrlPath.replace(/\/$/, '');
             
-            // If target is a post, highlight the main Blog link
-            if (targetPath.startsWith('/posts/')) {
-                targetPath = '/blog';
-            }
+            // Normalize: /projects and /projects.html both highlight Projects link
+            if (targetPath === '/projects') targetPath = '/projects.html';
             
             if (linkPath === targetPath || (linkPath === '/' && targetPath === '')) { // Also handle empty path for root
                 navLink.classList.add('active');
@@ -199,13 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
                  console.log('Setting up Home logic...'); // DEBUG
                  setupImageClusterLogic(); 
                  setupModalLogic(); 
-             } else if (targetPath === '/projects' || targetPath.endsWith('/projects.html')) { // Check path for Projects
+             } else if (targetPath === '/projects' || targetPath.endsWith('/projects.html')) { // Check path for Projects (GitHub Pages uses .html)
                  console.log('Setting up Projects logic...'); // DEBUG
                  setupProjectListLogic(); 
-             } else if (targetPath === '/blog' || targetPath.endsWith('/blog.html') || targetPath.startsWith('/posts/')) { // Check path for Blog OR individual post
-                 console.log('Setting up Blog logic...'); // DEBUG
-                 // No specific setup needed now for list or posts
-                 console.log('Loaded blog content.');
              }
 
             // 5. Update URL and Nav link (only if not triggered by popstate)

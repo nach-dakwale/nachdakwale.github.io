@@ -4,12 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal portfolio website for Nach Dakwale, built as a static HTML/CSS/JavaScript site with a Python-based blog management system. The site showcases projects, includes a blog, and features an interactive photo gallery.
+This is a personal portfolio website for Nach Dakwale, built as a static HTML/CSS/JavaScript site. The site showcases projects and features an interactive photo gallery. Content is shared via LinkedIn articles rather than an on-site blog.
 
 ## Development Commands
-
-### Blog Management
-- **Generate blog index**: `python build_blog_index.py` - Scans the `posts/` directory and automatically updates `blog.html` with a list of all blog posts, sorted by date
 
 ### Local Development
 - **Serve locally**: Open `index.html` directly in a browser, or use any static file server
@@ -20,19 +17,15 @@ This is a personal portfolio website for Nach Dakwale, built as a static HTML/CS
 ### Core Architecture
 - **Static Site**: Pure HTML/CSS/JavaScript with no build system or framework dependencies
 - **SPA-like Navigation**: JavaScript-powered page transitions that fetch content dynamically while maintaining the appearance of a single-page application
-- **Blog System**: Python script automatically generates blog index from individual HTML post files
 
 ### Key Directories
 ```
 portfolio/
 ├── index.html              # Home page with photo gallery
 ├── projects.html           # Projects showcase with expandable details
-├── blog.html              # Blog index (auto-generated)
-├── posts/                 # Individual blog post HTML files
-├── styles/main.css        # All styles in a single CSS file
-├── js/main.js            # All JavaScript functionality
-├── images/               # Static assets and photos
-└── build_blog_index.py   # Blog index generator script
+├── styles/main.css         # All styles in a single CSS file
+├── js/main.js              # All JavaScript functionality
+└── images/                 # Static assets and photos
 ```
 
 ### JavaScript Architecture
@@ -41,11 +34,9 @@ portfolio/
 - **Page Transitions**: Fade-in/fade-out animations between pages with dynamic content loading
 - **Navigation**: Active link highlighting and browser history management
 
-### Blog System Workflow
-1. Create new blog posts using `_blog_post_template.html` as a template
-2. Place completed posts in the `posts/` directory
-3. Run `python build_blog_index.py` to update the blog index
-4. Posts require specific metadata: `<h1 class="post-full-title">`, `<p class="post-full-date">`, and `<meta name="excerpt">`
+### GitHub Pages Compatibility
+- Nav links use `.html` extension (e.g. `/projects.html`) for correct routing on GitHub Pages
+- All asset paths are relative for portability
 
 ### CSS Architecture
 - **Single File**: All styles contained in `styles/main.css`
@@ -54,12 +45,6 @@ portfolio/
 - **Responsive Design**: Mobile-first approach with breakpoints for different screen sizes
 
 ## Important Implementation Details
-
-### Blog Post Requirements
-- Posts must include `<h1 class="post-full-title">` for the title
-- Posts must include `<p class="post-full-date">` with format "Month Day, Year" (e.g., "May 12, 2025")
-- Posts should include `<meta name="excerpt" content="...">` for blog list previews
-- Post filenames should be URL-friendly (lowercase, hyphens for spaces)
 
 ### Navigation System
 - Uses `data-` attributes for image gallery metadata

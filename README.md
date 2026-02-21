@@ -6,20 +6,21 @@ A personal portfolio website showcasing my projects and experience in AI/ML, dev
 
 - Clean, modern design
 - Responsive layout
-- Project showcase
-- About me section
-- Contact information
+- Project showcase with expandable details
+- Interactive photo gallery
+- Contact information and social links
 
 ## Structure
 
 ```
 portfolio/
 ├── index.html
-├── about.html
 ├── projects.html
 ├── styles/
 │   └── main.css
-└── images/
+├── images/
+└── js/
+    └── main.js
 ```
 
 ## Setup
@@ -31,13 +32,20 @@ git clone https://github.com/yourusername/portfolio.git
 
 2. Open `index.html` in your browser to view the website locally.
 
+## Deploy to GitHub Pages
+
+1. Push this repo to GitHub.
+2. For a user site: Rename the repo to `username.github.io` (replace `username` with your GitHub username).
+3. Go to **Settings → Pages** and enable GitHub Pages (Source: main branch).
+4. Your site will be live at `https://username.github.io`.
+
 ## Technologies Used
 
 - HTML5
 - CSS3
-- Responsive Design
-- Modern CSS Features (Grid, Flexbox)
+- Vanilla JavaScript
+- Responsive Design (Grid, Flexbox)
 
 ## License
 
-All rights reserved © 2025 Nach Dakwale 
+All rights reserved © 2025 Nach Dakwale
