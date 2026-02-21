@@ -1,6 +1,12 @@
 # Python virtual environment
 .venv/
 
+# One-time setup scripts (not needed after initial deploy)
+setup-new-repo.sh
+
+# AI assistant guidance (local context, not for deployment)
+CLAUDE.md
+
 # OS-specific files
 .DS_Store
 node_modules/

@@ -34,10 +34,10 @@ git clone https://github.com/yourusername/portfolio.git
 
 ## Deploy to GitHub Pages
 
-1. Push this repo to GitHub.
-2. For a user site: Rename the repo to `username.github.io` (replace `username` with your GitHub username).
-3. Go to **Settings → Pages** and enable GitHub Pages (Source: main branch).
-4. Your site will be live at `https://username.github.io`.
+1. Create the repo: [github.com/new?name=nachdakwale.github.io](https://github.com/new?name=nachdakwale.github.io&description=Personal+portfolio) (click Create)
+2. Push: `git remote add origin https://github.com/nach-dakwale/nachdakwale.github.io.git && git push -u origin main`
+3. Go to **Settings → Pages** → enable (Source: main branch)
+4. Add custom domain `nachdakwale.com` in Pages settings
 
 ## Technologies Used
 
