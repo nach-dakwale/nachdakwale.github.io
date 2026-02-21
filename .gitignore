@@ -6,6 +6,7 @@ setup-new-repo.sh
 
 # AI assistant guidance (local context, not for deployment)
 CLAUDE.md
+AGENTS.md
 
 # OS-specific files
 .DS_Store
